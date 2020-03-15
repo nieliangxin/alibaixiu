@@ -36,17 +36,25 @@ $('#modifyBox').on('change', '#avatar', function () {
         }
     })
 });
-//显示用户列表
+//展示用户列表
+//创建一个存储用户的空数组
+let userArr = [];
 $.ajax({
     type: 'get',
     url: '/users',
     success: function (res) {
-        //字符串拼接
-        let html = template('userTpl', { data: res });
-        //显示页面
-        $('tbody').html(html);
+        userArr = res;
+        //调用函数
+        render();
     }
 });
+//封装字符串拼接函数
+function render() {
+      //字符串拼接
+      let html = template('userTpl', { data: userArr });
+      //显示页面
+      $('tbody').html(html);
+}
 //通过事件委托的方式为编辑按钮添加点击事件
 $('tbody').on('click', '.edit', function () {
     let id = $(this).attr('data-id');

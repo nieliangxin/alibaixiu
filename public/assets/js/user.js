@@ -18,8 +18,7 @@ function render() {
       $('tbody').html(html);
 };
 // 实现图片上传功能 
-//ajax来实现用户添加功能
-$('#modifyBox').on('change', '#avatar', function () {
+$('#avatar').on('change', function () {
     //用户选择到的文件
    let formData = new FormData();
    formData.append('avatar', this.files[0]);
@@ -70,17 +69,35 @@ $('#btnAdd').on('click', function () {
         }
     })
 });
-//通过事件委托的方式为编辑按钮添加点击事件
+//实现用户编辑展示功能 因为编辑按钮是后来添加的,所以需要用事件委托
 $('tbody').on('click', '.edit', function () {
-    let id = $(this).attr('data-id');
-    $.ajax({
-        type: 'get',
-        url: '/users/' + id,
-        success: function (res) {
-            let html = template('modifyTpl', res);
-            $('#modifyBox').html(html);
-        }
-    })
+    //将h2标题改成修改用户
+    $('h2').html('修改用户信息')
+   //获取当前被点击的元素的父级元素tr
+    let tr = $(this).parents('tr');
+    //获取图片
+    $('#preview').attr('src', tr.find('img').attr('src'));
+    //获取隐藏域的值
+    $('#hiddenAvatar').val("tr.find('img').attr('src')");
+    //获取邮箱地址展示在页面上
+    $('input[name="email"]').val(tr.children().eq(2).text());
+    //获取昵称展示在页面上
+    $('input[name="nickName"]').val(tr.children().eq(3).text());
+    //获取用户状态
+    if (tr.children().eq(4).text() == '激活') {
+        $('#status1').prop('checked', true);
+    } else {
+        $('#status0').prop('checked', true);
+    }
+    //获取用户角色
+    if (tr.children().eq(5).text() == '超级管理员') {
+        $('#admin').prop('checked', true);
+    } else {
+        $('#normal').prop('checked', true);
+    }
+    //将添加按钮隐藏 同时修改按钮显示
+    $('#btnAdd').hide();
+    $('#btnEdit').show();
 });
 //修改表单添加表单提交时间
 $('#modifyBox').on('submit', '#modifyForm', function () {

@@ -83,6 +83,7 @@
             <div class="form-group">
               <!-- <button class="btn btn-primary" type="submit">添加</button> -->
               <button class="btn btn-primary" type="button" id="btnAdd">添加</button>
+              <button class="btn btn-primary" type="button" id="btnEdit" style="display: none ;">修改</button>
             </div>
           </form>
         </div>
@@ -178,54 +179,6 @@
       </td>
     </tr>
     {{/each}}
-  </script>
-  <!-- 用户信息修改表单模板 -->
-  <script type='text/html' id="modifyTpl">
-         <form id="modifyForm" data-id='{{_id}}'>
-            <h2>修改用户信息</h2>
-            <div class="form-group">
-              <label>头像</label>
-              <div class="form-group">
-                <label class="form-image">
-                  <input id="avatar" type="file">
-                  {{if avatar}}
-                  <img src="{{avatar}}" id="preview">
-                  {{else}}
-                  <img src="../assets/img/default.png" id="preview">
-                  {{/if}}
-                  <i class="mask fa fa-upload"></i>
-                  <input type="hidden" name="avatar" id="hiddenAvatar" value="avatar">
-                </label>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>邮箱</label>
-              <input class="form-control" type="email" placeholder="请输入邮箱" name="email" value="{{email}}">
-            </div>
-            <div class="form-group">
-              <label>昵称</label>
-              <input class="form-control" type="text" placeholder="请输入昵称" name="nickName" value="{{nickName}}">
-            </div>
-            <div class="form-group">
-              <div class="radio-inline">
-                <label><input type="radio" name="status" value="0" {{ status == 0 ? 'checked' : '' }}>未激活</label>
-              </div>
-              <div class="radio-inline">
-                <label><input type="radio" name="status" value="1" {{ status == 1 ? 'checked' : '' }}>激活</label>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="radio-inline">
-                <label><input type="radio" name="role" value="admin" {{ role == 'admin' ? 'checked' : '' }}>超级管理员</label>
-              </div>
-              <div class="radio-inline">
-                <label><input type="radio" name="role" value="normal" {{ role == 'normal' ? 'checked' : '' }}>普通用户</label>
-              </div>
-            </div>
-            <div class="form-group">
-              <button class="btn btn-primary" type="submit">修改</button>
-            </div>
-          </form>
   </script>
   <!-- 引入公共common.js文件 实现退出问能 -->
   <script src="../assets/js/common.js"></script>

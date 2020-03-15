@@ -1,21 +1,3 @@
-$('#userForm').on('submit', function () {
-    let formData = $(this).serialize();
-    //发送请求
-    $.ajax({
-        type: 'post',
-        url: '/users',
-        data: formData,
-        success: function () {
-            //刷新页面
-            location.reload();
-        },
-        error: function () {
-            alert('用户添加失败');
-        }
-    })
-    //阻止表单默认提交行为
-    return false;
-});
 //展示用户列表
 //创建一个存储用户的空数组
 let userArr = [];
@@ -28,7 +10,7 @@ $.ajax({
         render();
     }
 });
-//封装字符串拼接函数
+//封装字符串拼接函数 渲染页面
 function render() {
       //字符串拼接
       let html = template('userTpl', { data: userArr });
@@ -57,6 +39,36 @@ $('#modifyBox').on('change', '#avatar', function () {
            $('#hiddenAvatar').val(res[0].avatar);
        }
    })
+});
+//完成用户添加功能
+$('#btnAdd').on('click', function () {
+    //获取用户输入的内容 并将内容格式化为字符串
+    let formData = $('form').serialize();
+    //发送请求
+    $.ajax({
+        type: 'post',
+        url: '/users',
+        data: formData,
+        success: function (res) {
+            //将数据添加到用户数组里
+            userArr.push(res);
+            //渲染页面
+            render();
+            //将表单数据清空
+            $('input[type="email"]').val('');
+            $('input[name="nickName"]').val('');
+            $('input[name="password"]').val('');
+            $('#status0').prop('checked', false);
+            $('#status1').prop('checked', false);
+            $('#admin').prop('checked', false);
+            $('#normal').prop('checked', false);
+            $('#hiddenAvatar').val('');
+            $('#preview').attr('src','../assets/img/default.png')
+        },
+        error: function (res) {
+            alert('用户添加失败');
+        }
+    })
 });
 //通过事件委托的方式为编辑按钮添加点击事件
 $('tbody').on('click', '.edit', function () {

@@ -16,26 +16,6 @@ $('#userForm').on('submit', function () {
     //阻止表单默认提交行为
     return false;
 });
-//实现图片上传功能
-$('#modifyBox').on('change', '#avatar', function () {
-    let formData = new FormData();
-    formData.append('avatar', this.files[0]);
-    $.ajax({
-        type: 'post',
-        url: '/upload',
-        data: formData,
-        //告诉$.ajax方法不要解析请求参数
-        processData: false,
-        //告诉$.ajax方法不要设置请求参数的类型
-        contentType: false,
-        success: function (res) {
-            //实现头像预览功能
-            $('#preview').attr('src', res[0].avatar);
-            //存储到隐藏域中
-            $('#hiddenAvatar').val(res[0].avatar);
-        }
-    })
-});
 //展示用户列表
 //创建一个存储用户的空数组
 let userArr = [];
@@ -54,7 +34,30 @@ function render() {
       let html = template('userTpl', { data: userArr });
       //显示页面
       $('tbody').html(html);
-}
+};
+// 实现图片上传功能 
+//ajax来实现用户添加功能
+$('#modifyBox').on('change', '#avatar', function () {
+    //用户选择到的文件
+   let formData = new FormData();
+   formData.append('avatar', this.files[0]);
+   $.ajax({
+       type: 'post',
+       url: '/upload',
+       data: formData,
+       //只要是通过jquery中的ajax来实现文件上传功能就需要下面两行代码
+       //告诉$.ajax方法不要解析请求参数
+       processData: false,
+       //告诉$.ajax方法不要设置请求参数的类型
+       contentType: false,
+       success: function (res) {
+           //实现头像预览功能 发送到服务器
+           $('#preview').attr('src', res[0].avatar);
+           //将图片地址保存到隐藏域中 点击提交按钮后发送请求,然后写到数据库
+           $('#hiddenAvatar').val(res[0].avatar);
+       }
+   })
+});
 //通过事件委托的方式为编辑按钮添加点击事件
 $('tbody').on('click', '.edit', function () {
     let id = $(this).attr('data-id');

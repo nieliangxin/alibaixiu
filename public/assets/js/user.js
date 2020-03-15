@@ -18,7 +18,7 @@ function render() {
     $('tbody').html(html);
 };
 // 实现图片上传功能 
-$('#avatar').on('change', function () {
+$('#avatar').on('change' ,function () {
     //用户选择到的文件
     let formData = new FormData();
     formData.append('avatar', this.files[0]);
@@ -86,7 +86,7 @@ $('tbody').on('click', '.edit', function () {
     //获取昵称展示在页面上
     $('input[name="nickName"]').val(tr.children().eq(3).text());
     //获取密码让密码框禁止修改
-    $('input[name="password"]').prop('disabled', true).val('')
+    $('input[name="password"]').prop('disabled', true);
     //获取用户状态
     if (tr.children().eq(4).text() == '激活') {
         $('#status1').prop('checked', true);
@@ -129,7 +129,7 @@ $('#btnEdit').on('click', function () {
             //清空昵称输入框
             $('input[name="nickName"]').val('');
             //将密码输入框设置启用
-            $('input[name="password"]').prop('disabled', false).val('');
+            $('input[name="password"]').prop('disabled', false);
             //将单选框清空
             $('#status1').prop('checked', false);
             $('#status0').prop('checked', false);
@@ -144,17 +144,21 @@ $('#btnEdit').on('click', function () {
         }
     })
 });
-//删除用户功能 通过事件委托的方式添加点击事件 因为删除按钮是通过javascript后渲染到页面上的
+//删除单个用户功能 通过事件委托的方式添加点击事件 因为删除按钮是通过javascript后渲染到页面上的
 $('tbody').on('click', '.delete', function () {
+    //获取当前用户的id
+    let id = $(this).attr('data-id');
     if (confirm('您确定要删除用户吗?')) {
-        //获取被点击的用户id
-        let id = $(this).attr('data-id');
         $.ajax({
             type: 'delete',
-            url: '/users/' + id,
+            url: '/users/' +id,
             success: function (res) {
-                //刷新页面
-                location.reload();
+               //从数组中将元素找出来
+                let index = userArr.findIndex(item => item._id == res._id);
+                //删除元素
+                userArr.splice(index, 1);
+                //渲染页面
+                render();
             }
         })
     }

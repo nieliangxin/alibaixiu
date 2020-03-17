@@ -8,13 +8,13 @@ $('#btnAdd').on('click', function () {
     if (className.length == 0) return alert('请输入分类图标');
     //发送ajax请求
     $.ajax({
-        type:"post",
-        url:"/categories",
-        data:{
-            title:title,
-            className:className
+        type: "post",
+        url: "/categories",
+        data: {
+            title: title,
+            className: className
         },
-        success:function(res) {
+        success: function (res) {
             // 把这个对象 添加到push数组中 
             cArr.push(res);
             render();
@@ -40,8 +40,11 @@ $.ajax({
         render();
     }
 });
-//实现分类的编辑功能
+//实现分类的数据显示
+//定义变量id
+var id;
 $('tbody').on('click', '.edit', function () {
+    id = $(this).parent().attr('data-id')
     $('h2').html('编辑分类');
     //获取当前被点击元素的父级元素tr
     let tr = $(this).parents('tr');
@@ -51,3 +54,25 @@ $('tbody').on('click', '.edit', function () {
     $('#btnAdd').hide();
     $('#btnEdit').show();
 });
+//实现编辑功能
+$('#btnEdit').on('click', function () {
+    let formData = $('form').serialize();
+    //发送请求
+    $.ajax({
+        type: 'put',
+        url: '/categories/' + id,
+        data: formData,
+        success: function (res) {
+            let index = cArr.findIndex(item => item._id == res._id);
+            //替换数据 重新赋值
+            cArr[index] = res;
+            //渲染页面
+            render();
+            $('h2').html('添加分类');
+            $('[name="title"]').val('');
+            $('[name="className"]').val('');
+            $('#btnAdd').show();
+            $('#btnEdit').hide();
+        }
+    })
+})

@@ -49,29 +49,31 @@
           <div class="form-group">
             <label for="feature">特色图像</label>
             <!-- show when image chose -->
-            <img class="help-block thumbnail" style="display: none">
+            <img class="help-block thumbnail" style="display: none;">
             <input id="feature" class="form-control" name="feature" type="file">
+            <!-- 隐藏域 -->
+            <input type="hidden" name="thumbnail" id="hidden">
           </div>
           <div class="form-group">
             <label for="category">所属分类</label>
             <select id="category" class="form-control" name="category">
-              <option value="1">未分类</option>
-              <option value="2">潮生活</option>
+ 
             </select>
           </div>
           <div class="form-group">
             <label for="created">发布时间</label>
-            <input id="created" class="form-control" name="created" type="datetime-local">
+            <input id="created" class="form-control" name="createAt" type="datetime-local">
           </div>
           <div class="form-group">
             <label for="status">状态</label>
             <select id="status" class="form-control" name="status">
-              <option value="drafted">草稿</option>
-              <option value="published">已发布</option>
+              <option value="0">草稿</option>
+              <option value="1">已发布</option>
             </select>
           </div>
           <div class="form-group">
-            <button class="btn btn-primary" type="submit">保存</button>
+            <!-- <button class="btn btn-primary" type="submit">保存</button> -->
+            <button class="btn btn-primary" type="button" id="btnAdd">保存</button>
           </div>
         </div>
       </form>
@@ -117,6 +119,13 @@
 
   <script src="../assets/vendors/jquery/jquery.js"></script>
   <script src="../assets/vendors/bootstrap/js/bootstrap.js"></script>
+  <script src="../assets/vendors/art-template/template-web.js"></script>
+  <script src="../assets/js/post-add.js"></script>
+  <script type="text/html" id="cvTpl">
+    {{each data}}
+    <option value="{{@$value._id}}">{{$value.title}}</option>
+    {{/each}}
+  </script>
   <script>NProgress.done()</script>
   <script src="../assets/js/common.js"></script>
 </body>

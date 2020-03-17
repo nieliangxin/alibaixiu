@@ -207,10 +207,13 @@ $('#delectAll').on('click', function () {
             type: 'delete',
             url: '/users/' + arr.join('-'),
             success: function (res) {
+                //遍历选中的元素 找出id 根据id删除选中的元素
                 res.forEach(item => {
                     //item表示数组里每一项就是一个对象
                     let index = userArr.findIndex(ele => ele._id == item._id);
+                    //删除元素
                     userArr.splice(index, 1);
+                    //渲染页面
                     render();
                 })
             }

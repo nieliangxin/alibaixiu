@@ -75,4 +75,17 @@ $('#btnEdit').on('click', function () {
             $('#btnEdit').hide();
         }
     })
+});
+//实现单个删除功能
+$('tbody').on('click', '.delete', function () {
+    let id = $(this).parent().attr('data-id');
+    $.ajax({
+        type: 'delete',
+        url: '/categories/' + id,
+        success: function (res) {
+            let index = cArr.findIndex(item => item._id == res._id);
+            cArr.splice(index, 1);
+            render();
+        }
+    })
 })

@@ -18,7 +18,7 @@ function render() {
     $('tbody').html(html);
 };
 // 实现图片上传功能 
-$('#avatar').on('change' ,function () {
+$('#avatar').on('change', function () {
     //用户选择到的文件
     let formData = new FormData();
     formData.append('avatar', this.files[0]);
@@ -80,7 +80,7 @@ $('tbody').on('click', '.edit', function () {
     //获取图片
     $('#preview').attr('src', tr.find('img').attr('src'));
     //获取隐藏域的值
-    $('#hiddenAvatar').val("tr.find('img').attr('src')");
+    $('#hiddenAvatar').val(tr.find('img').attr('src'));
     //获取邮箱地址展示在页面上 让邮箱只读不能修改
     $('input[name="email"]').prop('disabled', true).val(tr.children().eq(2).text());
     //获取昵称展示在页面上
@@ -116,6 +116,7 @@ $('#btnEdit').on('click', function () {
             let index = userArr.findIndex(item => res._id == item._id);
             //替换数据 重新赋值
             userArr[index] = res;
+            // console.log(userArr);
             //渲染页面
             render();
             //将h2标题改成修改用户
@@ -151,9 +152,9 @@ $('tbody').on('click', '.delete', function () {
     if (confirm('您确定要删除用户吗?')) {
         $.ajax({
             type: 'delete',
-            url: '/users/' +id,
+            url: '/users/' + id,
             success: function (res) {
-               //从数组中将元素找出来
+                //根据索引从数组中将元素找出来
                 let index = userArr.findIndex(item => item._id == res._id);
                 //删除元素
                 userArr.splice(index, 1);
@@ -163,4 +164,56 @@ $('tbody').on('click', '.delete', function () {
         })
     }
 });
-//批量删除功能
+//实现批量删除功能
+//给全选按钮添加点击事件
+$('#selectAll').on('change', function () {
+    //全选按钮选中,批量删除按钮显示,反之隐藏
+    //判断全选按钮的状态
+    if ($(this).prop('checked')) {
+        $('#delectAll').show();
+    } else {
+        $('#delectAll').hide();
+    }
+    //点击全选,所有用户被选中
+    $(".check").prop('checked', $(this).prop('checked'));
+});
+//给所有用户的复选框添加点击事件
+$('tbody').on('change', '.check', function () {
+    //判断所有用户数量和被选中的数量是否一致 如果用户复选框全部选中,那么全选被选中,反之则不被选中
+    //获取所有用户的数量
+    let length = $('.check').length;
+    //获取被点击的用户数量
+    let checklength = $('.check:checked').length;
+    $('#selectAll').prop('checked', length === checklength);
+    //当用户复选框任意一个被选中时,批量删除按钮显示
+    if (checklength > 1) {
+        //批量删除按钮显示
+        $('#delectAll').show();
+    } else {
+        //批量删除按钮隐藏
+        $('#delectAll').hide();
+    }
+});
+//给批量删除按钮添加点击事件
+$('#delectAll').on('click', function () {
+    //创建一个空数组,来保存所选中的元素id
+    let arr = [];
+    //获取所有被选中的用户,拿到所选中元素的id 添加到arr中,需遍历选中的元素
+    $('.check:checked').each(function (index, item) {
+        arr.push($(item).parents('tr').attr('data-id'));
+    });
+    if (confirm('您确定要删除吗?')) {
+        $.ajax({
+            type: 'delete',
+            url: '/users/' + arr.join('-'),
+            success: function (res) {
+                res.forEach(item => {
+                    //item表示数组里每一项就是一个对象
+                    let index = userArr.findIndex(ele => ele._id == item._id);
+                    userArr.splice(index, 1);
+                    render();
+                })
+            }
+        })
+    }
+});

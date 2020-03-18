@@ -65,7 +65,7 @@ if (id != -1) {
         type: 'put',
         url: '/posts/' + id,
         success: function (res) {
-            console.log(res);
+            // console.log(res);
             $('h1').text('编辑文章');
             $('#title').val(res.title);
             $('#content').val(res.content);

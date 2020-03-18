@@ -23,8 +23,10 @@ function render(cid, state, page = 1) {
 };
 //页面展示文章数据
 render(cid, state);
+var currentPage = 1;
 //分页
 function changePage(index) {
+    currentPage=index
     //点击页码a便签实现无刷新
     render(cid, state, index);
 };
@@ -45,3 +47,20 @@ $('#search').on('click', function () {
     //向服务器发送请求
     render(cid, state);
 });
+//实现删除文章的功能
+//给删除按钮添加点击事件通过事件委托的方法
+$('tbody').on('click', '.del', function () {
+    //获取当前需要删除的文章id
+    let id = $(this).attr('data-id');
+    //弹出删除确认框
+    if (confirm('您确定要删除吗?')) {
+        //发送ajax请求
+        $.ajax({
+            type: 'delete',
+            url: '/posts/' + id,
+            success: function (res) {
+                render(cid, state, currentPage);
+            }
+        })
+    }
+})

@@ -13,11 +13,11 @@ module.exports = async (req, res) => {
 	// 查询条件
 	let condition = {};
 	// 分类条件
-	if (req.query.category != undefined) {
+	if (req.query.category != "all") {
 		condition.category = req.query.category;
 	}
 	// 状态条件
-	if (req.query.state != undefined) {
+	if (req.query.state != "all") {
 		condition.state = req.query.state;
 	}
 	console.log(condition)

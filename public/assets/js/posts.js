@@ -2,6 +2,7 @@
 var cid = $('#category').val();
 var state = $('#state').val();
 //封装一个函数用于发送ajax请求
+// 函数形参的默认值 一定要放置于函数形参列表的最后面 
 function render(cid, state, page = 1) {
     $.ajax({
         type: 'get',

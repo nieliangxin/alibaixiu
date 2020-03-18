@@ -23,6 +23,7 @@ function render(cid, state, page = 1) {
 };
 //页面展示文章数据
 render(cid, state);
+//声明一个变量 页码为1
 var currentPage = 1;
 //分页
 function changePage(index) {
@@ -59,7 +60,17 @@ $('tbody').on('click', '.del', function () {
             type: 'delete',
             url: '/posts/' + id,
             success: function (res) {
-                render(cid, state, currentPage);
+                //如果tbody便签下的tr只有一个,就跳转到上一页
+                if ($('tbody tr').length == 1) {
+                    //如果当前页是第一页,就不让跳转
+                    if (currentPage == 1) {
+                        render(cid, state, currentPage); 
+                    } else {
+                        render(cid, state, --currentPage);
+                    }
+                } else {
+                    render(cid, state, currentPage);
+                }
             }
         })
     }

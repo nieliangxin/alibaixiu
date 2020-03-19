@@ -168,7 +168,7 @@
   <script type="text/html" id="hTpl">
     {{each data}}
     <li>
-      <a href="javascript:;">
+      <a href="detail.html?id={{@$value._id}}">
         <img src="{{$value.thumbnail}}" alt="">
         <span>{{$value.title}}</span>
       </a>
@@ -183,7 +183,7 @@
           <div class="head">
             <span class="sort">{{
               $value.category.title}}</span>
-            <a href="javascript:;">{{$value.title}}</a>
+            <a href="detail.html?id={{$value._id}}">{{$value.title}}</a>
           </div>
           <div class="main">
             <p class="info">{{$value.author.nickName}} 发表于 {{$value.createAt.substr(0,10)}}</p>
@@ -199,7 +199,7 @@
                 分类：<span>{{$value.category.title}}</span>
               </a>
             </p>
-            <a href="javascript:;" class="thumb">
+            <a href="detail.html?id={{$value._id}}" class="thumb">
               <img src="{{$value.thumbnail}}" alt="">
             </a>
           </div>

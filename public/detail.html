@@ -1,3 +1,25 @@
+<!-- 只有浏览器地址栏传id参数过来,才能访问页面 -->
+<script>
+//封装一个函数 根据参数来返回对应的值 如果有就返回,如果没有就返回-1
+function getParams(key) {
+    //先获取浏览器上的地址栏,从?后面开始截取 用&分隔为数组
+    let params = location.search.substr(1).split('&');
+    //遍历数组
+    for (var i = 0; i < params.length; i++) {
+        //返回的是key=value的形式的字符串 将其转换为数组
+        let temp = params[i].split('=');
+        if (temp[0] === key) {
+            return temp[1]
+        }
+    }
+    return -1
+}
+//调用函数 传id实参过去
+let id = getParams('id');
+if (id === -1) {
+  location.href='index.html';
+}
+</script>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -128,22 +150,7 @@
     </div>
     <div class="content">
       <div class="article">
-        <div class="breadcrumb">
-          <dl>
-            <dt>当前位置：</dt>
-            <dd><a href="javascript:;">奇趣事</a></dd>
-            <dd>变废为宝！将手机旧电池变为充电宝的Better RE移动电源</dd>
-          </dl>
-        </div>
-        <h2 class="title">
-          <a href="javascript:;">又现酒窝夹笔盖新技能 城里人是不让人活了！</a>
-        </h2>
-        <div class="meta">
-          <span>DUX主题小秘 发布于 2020-06-29</span>
-          <span>分类: <a href="javascript:;">奇趣事</a></span>
-          <span>阅读: (2421)</span>
-          <span>评论: (143)</span>
-        </div>
+        
       </div>
       <div class="panel hots">
         <h3>热门推荐</h3>
@@ -182,5 +189,33 @@
   <script src="./assets/vendors/jquery/jquery.min.js"></script>
   <script src="./assets/vendors/art-template/template-web.js"></script>
   <script src="./assets/js/public.js"></script>
+  <script type="text/html" id="tpl">
+    <div class="breadcrumb">
+          <dl>
+            <dt>当前位置：</dt>
+            <dd><a href="javascript:;">{{category.title}}</a></dd>
+            <dd>{{title}}</dd>
+          </dl>
+        </div>
+        <h2 class="title">
+          <a href="javascript:;">{{content}}</a>
+        </h2>
+        <div class="meta">
+          <span>{{author.nickName}} 发布于 {{createAt.substr(0,30)}}</span>
+          <span>分类: <a href="javascript:;">{{category.title}}</a></span>
+          <span>阅读: ({{meta.views}})</span>
+          <span>评论: ({{meta.comments}})</span>
+        </div>
+  </script>
+  <script>
+    $.ajax({
+      type:'get',
+      url:'/posts/'+id,
+      success:function(res){
+        let html=template('tpl',res);
+        $('.article').html(html);
+      }
+    })
+  </script>
 </body>
 </html>

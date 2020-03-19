@@ -7,7 +7,7 @@ $.ajax({
         let tpl = `
         {{each data}}
         <li>
-            <a href="javascript:;">
+            <a href="detail.html?id={{@$value._id}}">
               <p class="title">{{$value.title}}</p>
               <p class="reading">阅读({{$value.meta.views}})</p>
               <div class="pic">
@@ -34,4 +34,4 @@ $.ajax({
         let html = template.render(tpl, { data: res });
         $('.nav_data').html(html)
     }
-})
+});

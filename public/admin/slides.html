@@ -42,18 +42,20 @@
               <label for="image">图片</label>
               <!-- show when image chose -->
               <img class="help-block thumbnail" style="display: none">
-              <input id="image" class="form-control" name="image" type="file">
+              <input id="image" class="form-control" type="file">
+              <input type="hidden" name="image" id="hidden">
             </div>
             <div class="form-group">
               <label for="text">文本</label>
-              <input id="text" class="form-control" name="text" type="text" placeholder="文本">
+              <input id="title" class="form-control" name="title" type="text" placeholder="文本">
             </div>
             <div class="form-group">
               <label for="link">链接</label>
               <input id="link" class="form-control" name="link" type="text" placeholder="链接">
             </div>
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">添加</button>
+              <!-- <button class="btn btn-primary" type="submit">添加</button> -->
+              <button class="btn btn-primary" type="button" id="btn">添加</button>
             </div>
           </form>
         </div>
@@ -68,22 +70,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td class="text-center"><img class="slide" src="../uploads/slide_1.jpg"></td>
-                <td>XIU功能演示</td>
-                <td>#</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-center"><img class="slide" src="../uploads/slide_2.jpg"></td>
-                <td>XIU功能演示</td>
-                <td>#</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
+            
             </tbody>
           </table>
         </div>
@@ -93,8 +80,8 @@
 
   <div class="aside">
     <div class="profile">
-      <img class="avatar" src="../uploads/avatar.jpg">
-      <h3 class="name">Coder</h3>
+      <img class="avatar" src="">
+      <h3 class="name"></h3>
     </div>
     <ul class="nav">
       <li>
@@ -130,7 +117,21 @@
 
   <script src="../assets/vendors/jquery/jquery.js"></script>
   <script src="../assets/vendors/bootstrap/js/bootstrap.js"></script>
-  <script>NProgress.done()</script>
   <script src="../assets/js/common.js"></script>
-</body>
+  <script src="../assets/vendors/art-template/template-web.js"></script>
+  <script src="../assets/js/slides.js"></script>
+  <script type="text/html" id="sTpl">
+    {{each data}}
+    <tr>
+      <td class="text-center"><img class="slide" src="{{$value.image}}"></td>
+      <td>{{$value.title}}</td>
+      <td>{{$value.link}}</td>
+      <td class="text-center">
+        <a href="javascript:;" class="btn btn-danger btn-xs delete" data-id="{{@$value._id}}">删除</a>
+      </td>
+    </tr>
+    {{/each}}
+  </script>
+  <script>NProgress.done()</script>
 </html>
+</body>

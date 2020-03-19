@@ -179,32 +179,9 @@
     <div class="content">
       <div class="swipe">
         <ul class="swipe-wrapper">
-          <li>
-            <a href="#">
-              <img src="uploads/slide_1.jpg">
-              <span>XIU主题演示</span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <img src="uploads/slide_2.jpg">
-              <span>XIU主题演示</span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <img src="uploads/slide_1.jpg">
-              <span>XIU主题演示</span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <img src="uploads/slide_2.jpg">
-              <span>XIU主题演示</span>
-            </a>
-          </li>
+          
         </ul>
-        <p class="cursor"><span class="active"></span><span></span><span></span><span></span></p>
+        <p class="cursor"><span class="active"></span><span></span><span></span></p>
         <a href="javascript:;" class="arrow prev"><i class="fa fa-chevron-left"></i></a>
         <a href="javascript:;" class="arrow next"><i class="fa fa-chevron-right"></i></a>
       </div>
@@ -317,11 +294,28 @@
       <p>© 2016 XIU主题演示 本站主题由 themebetter 提供</p>
     </div>
   </div>
-  <script src="assets/vendors/jquery/jquery.js"></script>
+  <script src="assets/vendors/jquery/jquery.min.js"></script>
   <script src="assets/vendors/swipe/swipe.js"></script>
+  <script src="./assets/vendors/art-template/template-web.js"></script>
+  <script type="text/html" id="sTpl">
+    {{each data}}
+    <li>
+      <a href="/detail.html?id={{$value.link}}">
+        <img src="{{$value.image}}">
+        <span>{{$value.title}}</span>
+      </a>
+    </li>
+    {{/each}}
+  </script>
   <script>
-    //
-    var swiper = Swipe(document.querySelector('.swipe'), {
+    //获取轮播图数据
+    $.ajax({
+      type:'get',
+      url:'/slides',
+      success:function(res){
+        let html=template('sTpl',{data:res});
+        $('.swipe-wrapper').html(html);
+        var swiper = Swipe(document.querySelector('.swipe'), {
       auto: 3000,
       transitionEnd: function (index) {
         // index++;
@@ -338,6 +332,8 @@
         swiper.prev();
       } else if(_this.is('.next')) {
         swiper.next();
+      }
+    })
       }
     })
   </script>

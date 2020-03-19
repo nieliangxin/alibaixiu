@@ -18,7 +18,7 @@ $('#logo').on('change', function () {
 $('#btn').on('click', function () {
     // 将是否开启评论功能与是否开始人工批准功能的内容写入到我们定义的两个隐藏域 
     $('#comment').val($('#comment_status').prop('checked'));
-    $('#review').val($('#review_status').prop('checked'));
+    $('#review').val($('#comment_reviewed').prop('checked'));
     // serialize它会收集表单的数据 一定要表单的控件标签有name属性才会收集
     let data = $('form').serialize();
     $.ajax({

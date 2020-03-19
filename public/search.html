@@ -1,27 +1,28 @@
 <!-- 只有浏览器地址栏传id参数过来,才能访问页面 -->
 <script>
-//封装一个函数 根据参数来返回对应的值 如果有就返回,如果没有就返回-1
-function getParams(key) {
+  //封装一个函数 根据参数来返回对应的值 如果有就返回,如果没有就返回-1
+  function getParams(key) {
     //先获取浏览器上的地址栏,从?后面开始截取 用&分隔为数组
     let params = location.search.substr(1).split('&');
     //遍历数组
     for (var i = 0; i < params.length; i++) {
-        //返回的是key=value的形式的字符串 将其转换为数组
-        let temp = params[i].split('=');
-        if (temp[0] === key) {
-            return temp[1]
-        }
+      //返回的是key=value的形式的字符串 将其转换为数组
+      let temp = params[i].split('=');
+      if (temp[0] === key) {
+        return temp[1]
+      }
     }
     return -1
-}
-//调用函数 传id实参过去
-let id = getParams('id');
-if (id === -1) {
-  location.href='index.html';
-}
+  }
+  //调用函数 传id实参过去
+  let keys = getParams('keys');
+  if (keys === -1) {
+    location.href = 'index.html';
+  }
 </script>
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,17 +30,18 @@ if (id === -1) {
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/vendors/font-awesome/css/font-awesome.css">
 </head>
+
 <body>
   <div class="wrapper">
     <div class="topnav">
       <ul class="nav_data">
-        
+
       </ul>
     </div>
     <div class="header">
       <h1 class="logo"><a href="index.html"><img src="assets/img/logo.png" alt=""></a></h1>
       <ul class="nav nav_data">
-        
+
       </ul>
       <div class="search">
         <form>
@@ -61,7 +63,7 @@ if (id === -1) {
       <div class="widgets">
         <h4>随机推荐</h4>
         <ul class="body random">
-         
+
         </ul>
       </div>
       <div class="widgets">
@@ -149,74 +151,55 @@ if (id === -1) {
       </div>
     </div>
     <div class="content">
-      <div class="article">
-        
+      <div class="panel new">
+
       </div>
-      <div class="panel hots">
-        <h3>热门推荐</h3>
-        <ul>
-          <li>
-            <a href="javascript:;">
-              <img src="uploads/hots_2.jpg" alt="">
-              <span>星球大战:原力觉醒视频演示 电影票68</span>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:;">
-              <img src="uploads/hots_3.jpg" alt="">
-              <span>你敢骑吗？全球第一辆全功能3D打印摩托车亮相</span>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:;">
-              <img src="uploads/hots_4.jpg" alt="">
-              <span>又现酒窝夹笔盖新技能 城里人是不让人活了！</span>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:;">
-              <img src="uploads/hots_5.jpg" alt="">
-              <span>实在太邪恶！照亮妹纸绝对领域与私处</span>
-            </a>
-          </li>
-        </ul>
+      <div class="footer">
+        <p>© 2016 XIU主题演示 本站主题由 themebetter 提供</p>
       </div>
     </div>
-    <div class="footer">
-      <p>© 2016 XIU主题演示 本站主题由 themebetter 提供</p>
-    </div>
-  </div>
-  <script src="./assets/vendors/jquery/jquery.min.js"></script>
-  <script src="./assets/vendors/art-template/template-web.js"></script>
-  <script src="./assets/js/public.js"></script>
-  <script type="text/html" id="tpl">
-    <div class="breadcrumb">
-          <dl>
-            <dt>当前位置：</dt>
-            <dd><a href="javascript:;">{{category.title}}</a></dd>
-            <dd>{{title}}</dd>
-          </dl>
-        </div>
-        <h2 class="title">
-          <a href="javascript:;">{{content}}</a>
-        </h2>
-        <div class="meta">
-          <span>{{author.nickName}} 发布于 {{createAt.substr(0,30)}}</span>
-          <span>分类: <a href="javascript:;">{{category.title}}</a></span>
-          <span>阅读: ({{meta.views}})</span>
-          <span>评论: ({{meta.comments}})</span>
-          <a href="javascript:;">点赞</a>
-        </div>
+    <script src="./assets/vendors/jquery/jquery.min.js"></script>
+    <script src="./assets/vendors/art-template/template-web.js"></script>
+    <script src="./assets/js/public.js"></script>
+    <script type="text/html" id="tpl">
+    {{each data}}
+    <div class="entry">
+          <div class="head">
+            <span class="sort">{{$value.category.title}}</span>
+            <a href="detail.html?id={{@$value._id}}">{{$value.title}}</a>
+          </div>
+          <div class="main">
+            <p class="info">{{$value.author.nickName}} 发表于 {{$value.createAt.substr(0,10)}}</p>
+            <p class="brief">{{$value.content}}</p>
+            <p class="extra">
+              <span class="reading">阅读({{$value.meta.views}})</span>
+              <span class="comment">评论({{$value.meta.comments}})</span>
+              <a href="javascript:;" class="like">
+                <i class="fa fa-thumbs-up"></i>
+                <span>赞({{$value.meta.likes}})</span>
+              </a>
+              <a href="javascript:;" class="tags">
+                分类：<span>{{$value.category.title}}</span>
+              </a>
+            </p>
+            <a href="detail.html?id={{$value._id}}" class="thumb">
+              <img src="{{$value.thumbnail}}" alt="">
+            </a>
+          </div>
+          {{/each}}
   </script>
-  <script>
-    $.ajax({
-      type:'get',
-      url:'/posts/'+id,
-      success:function(res){
-        let html=template('tpl',res);
-        $('.article').html(html);
-      }
-    })
-  </script>
+    <script>
+      //关键字搜索
+      $.ajax({
+        type: 'get',
+        url: '/posts/search/' + keys,
+        success: function (res) {
+          console.log(res);
+          let html = template('tpl', { data: res });
+          $('.new').append(html);
+        }
+      })
+    </script>
 </body>
+
 </html>

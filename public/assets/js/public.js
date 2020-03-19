@@ -35,3 +35,12 @@ $.ajax({
         $('.nav_data').html(html)
     }
 });
+//给搜索康框添加提交时间
+$('.search form').on('submit', function () {
+  //获取用户在表单中输入的关键字
+  let result= $(this).find('.keys').val();
+  //跳转到搜索结果页面并且将用户输入的搜索关键字传递到搜索结果页面
+  location.href='/search.html?keys='+result
+  //阻止默认提交事件
+  return false;
+})
